@@ -28,16 +28,16 @@ const allCities = [
 ];
 
 const UBikeStationInfo = () => {
-  const [allStations, setAllStations] = useState([]); // API 全部資料
-  const [areas, setAreas] = useState([]); // 行政區清單
-  const [selectedAreas, setSelectedAreas] = useState({}); // 勾選狀態
+  const [allStations, setAllStations] = useState([]);
+  const [areas, setAreas] = useState([]);
+  const [selectedAreas, setSelectedAreas] = useState({}); 
   const [searchTerm, setSearchTerm] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [sortState, setSortState] = useState({ key: null, direction: null });
   const [selectedCity, setSelectedCity] = useState('臺北市');
   const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
 
-  // ✅ 鎖定頁面滾動
+  // 鎖定頁面滾動
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -46,7 +46,7 @@ const UBikeStationInfo = () => {
     }
   }, [isMobileMenuOpen]);
 
-  // ✅ 抓取台北市資料
+  // 抓取台北市資料
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,18 +55,18 @@ const UBikeStationInfo = () => {
         );
         const data = await res.json();
 
-        // ✅ 過濾台北市資料
+        // 過濾台北市資料
         const taipeiStations = data.filter((item) => item.sarea && item.sna);
 
         const normalizedStations = taipeiStations.map(station => ({
           ...station,
-          sarea: areaMap[station.sarea] || station.sarea // 如果有對應的中文，就用中文；否則保留原樣
+          sarea: areaMap[station.sarea] || station.sarea 
         }));
 
-        // ✅ 提取行政區並去重
+        // 提取行政區並去重
         const uniqueAreas = [...new Set(normalizedStations.map((item) => item.sarea))];
 
-        // ✅ 預設勾選全部行政區
+        // 預設勾選全部行政區
         const initialSelected = {};
         uniqueAreas.forEach((area) => {
           initialSelected[area] = true;
@@ -83,7 +83,7 @@ const UBikeStationInfo = () => {
     fetchData();
   }, []);
 
-  // ✅ 切換行政區 Checkbox
+  // 切換行政區 Checkbox
   const handleAreaToggle = (area) => {
     setSelectedAreas((prev) => ({
       ...prev,
@@ -91,7 +91,7 @@ const UBikeStationInfo = () => {
     }));
   };
 
-  // ✅ 全選 / 取消全選
+  // 全選 / 取消全選
   const handleSelectAll = () => {
     const allSelected = Object.values(selectedAreas).every(Boolean);
     const newState = {};
@@ -101,14 +101,14 @@ const UBikeStationInfo = () => {
     setSelectedAreas(newState);
   };
 
-  // ✅ 篩選站點
+  // 篩選站點
   const filteredStations = allStations.filter((station) => {
     const matchArea = selectedAreas[station.sarea];
     const matchSearch = station.sna.includes(searchTerm);
     return matchArea && matchSearch;
   });
 
-  // ✅ 根據搜尋欄文字產生建議列表
+  // 根據搜尋欄文字產生建議列表
   const suggestedStations = allStations
     .filter(station => station.sna.includes(searchTerm))
     .slice(0, 5); // 只顯示前 5 個建議
@@ -155,7 +155,7 @@ const UBikeStationInfo = () => {
     });
   };
 
-  // ✅ 新增清除搜尋欄文字的函數
+  //新增清除搜尋欄文字的函數
   const handleClearSearch = () => {
     setSearchTerm('');
   };
@@ -231,7 +231,6 @@ const UBikeStationInfo = () => {
                   onClick={() => setIsCityDropdownOpen(!isCityDropdownOpen)}
                 >
                   <span className="text-gray-700">{selectedCity}</span>
-                  {/* 使用 SVG 圖示替換 */}
                   {isCityDropdownOpen ? (
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M5.25 10.5L9 6.75L12.75 10.5H5.25Z" fill="#323232"/>
@@ -387,7 +386,6 @@ const UBikeStationInfo = () => {
               </div>
             </div>
           ) : (
-            // 如果選擇的是其他縣市，顯示提示訊息
             <div className="p-8 text-center text-gray-500">
               此縣市目前無 YouBike 資料
             </div>
