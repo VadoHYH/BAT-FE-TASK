@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-8">
       <div className="flex flex-col items-start">
-        <h1 className="text-2xl font-bold mb-6">烏龜移動 前端測驗</h1>
+        <h1 className="text-2xl font-bold mb-6">烏龜移動 前端測驗 <br />(由謝曜徽作答)</h1>
         <ul className="space-y-4 list-none p-0">
           <li><Link className="text-blue-500 underline" href="/test1">題目 1：數列求和</Link></li>
           <li><Link className="text-blue-500 underline" href="/test2">題目 2：抽獎模擬器</Link></li>
